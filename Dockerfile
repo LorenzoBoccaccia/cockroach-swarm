@@ -1,40 +1,19 @@
-#!/bin/bash
+FROM ubuntu:14.04
 
+RUN apt-get update && apt-get install wget curl dnsutils -y && cd /tmp && wget https://binaries.cockroachdb.com/cockroach-v1.0.2.linux-amd64.tgz \
+	&& tar -xf cockroach-v1.0.2.linux-amd64.tgz --strip=1 cockroach-v1.0.2.linux-amd64/cockroach \
+	&& mv cockroach /usr/local/bin
+	
+	
+	
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN ln -s usr/local/bin/docker-entrypoint.sh / &&  chmod a+x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
-LOCAL="$( ip addr | grep inet | grep -v inet6 | sed "s/.*inet //" | sed "s#/.*##" |  tr '\n' '|' | sed "s/|$//" )"
+EXPOSE 26257
+EXPOSE 8080
+VOLUME /cockroach-data
+HEALTHCHECK --interval=5s --timeout=1s \
+  CMD curl -f http://localhost:8080/ || exit 1
 
-MASTER=$( nslookup tasks.cockroachdb | tail -n +4 | grep Address | wc -l )
-
-if [ $MASTER = "0" ] ; then
-	sleep $[ ( $RANDOM % 100 )  + 1 ]s
-fi
- 
-MASTER=$( nslookup tasks.cockroachdb | tail -n +4 | grep Address | wc -l )
-
-
-JOIN=$( nslookup tasks.cockroachdb | tail -n +3 | grep Address | sed "s/Address: //" | tr '\n' " " | sed "s/ $//" | sed "s/  +/ /" | sed "s/ / --join /g " )
-
-FILE=/cockroach-data/COCKROACHDB_VERSION
-
-if [ -n $NUM_REPLICAS  ]; then
-	echo "setting replicas"
-	echo 'num_replicas: $NUM_REPLICAS' | /usr/local/bin/cockroach zone set .default --insecure -f - --host cockroachdb
-fi
-
-if [ -f $FILE ]; then
-   echo "Datadir exists  start --insecure --logtostderr=INFO"
-   exec "$@" start --insecure --logtostderr=INFO
-else
-	if [ $MASTER = "0" ] ; then
-	      echo "\$MASTER is $MASTER start --insecure --logtostderr=INFO"
-	      exec "$@" start --insecure --logtostderr=INFO
-	else
-	      echo "\$MASTERr is $MASTER empty start --insecure --logtostderr=INFO --join $JOIN"
-	      exec "$@" start --insecure --logtostderr=INFO --join $JOIN
-	fi
-   
-fi
-
-
-
-
+CMD ["/usr/local/bin/cockroach"]
