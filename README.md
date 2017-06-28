@@ -8,6 +8,8 @@ You can add as many node as you want dynamically using the scaling command
 
 You have to scale back one node at a time waiting for the cluster to finish rebalancing
 
+Also, there are currently loads issues with replicas on the same node in docker, so don't go over one replica per swarm node, even if it's cool for testing
+
 ## Usage:
 
     docker build https://github.com/LorenzoBoccaccia/cockroach-swarm.git -t tos/cockroachdb
