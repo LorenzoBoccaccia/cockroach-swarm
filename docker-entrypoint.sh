@@ -22,8 +22,8 @@ if [ -n $NUM_REPLICAS  ]; then
 fi
 
 if [ -f $FILE ]; then
-   echo "Datadir exists  start --insecure --logtostderr=INFO"
-   exec "$@" start --insecure --logtostderr=INFO
+   echo "Datadir exists  start --insecure --logtostderr=INFO --join $JOIN"
+   exec "$@" start --insecure --logtostderr=INFO --join $JOIN
 else
 	if [ $MASTER = "0" ] ; then
 	      echo "\$MASTER is $MASTER start --insecure --logtostderr=INFO"
