@@ -18,7 +18,7 @@ FILE=/cockroach-data/COCKROACHDB_VERSION
 
 if [ -n $NUM_REPLICAS  ]; then
 	echo "setting replicas"
-	echo 'num_replicas: $NUM_REPLICAS' | /usr/local/bin/cockroach zone set .default --insecure -f - --host cockroachdb
+	echo "num_replicas: $NUM_REPLICAS" | /usr/local/bin/cockroach zone set .default --insecure -f - --host cockroachdb
 fi
 
 if [ -f $FILE ]; then
