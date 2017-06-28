@@ -11,6 +11,7 @@ You have to scale back one node at a time waiting for the cluster to finish reba
 ## Usage:
 
     docker build https://github.com/LorenzoBoccaccia/cockroach-swarm.git -t tos/cockroachdb
-    docker service create --name cockroachdb --replicas 3  --network swarm-network  tos/cockroachdb
+    docker service create --name cockroachdb --replicas 5  -e NUM_REPLICAS3=3 --network swarm-network --mount type=volume,source=cockroachdb{{.Task.Slot}},destination=/cockroach-data  tos/cockroachdb
+    
 
 \* proper scaling depends on a number of features currently missing from cockroachdb, like decommissioning nodes
