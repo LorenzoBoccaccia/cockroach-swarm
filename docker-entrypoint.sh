@@ -2,6 +2,11 @@
 
 #wait the nslookup to populate
 sleep 5 
+if [ "${1-}" = "cockroach" ]; then
+  shift
+  exec /cockroach/cockroach "$@"
+else
+
 
 cleanup() {
     echo "Container stopped, performing cleanup..."
@@ -24,3 +29,4 @@ wait $PID
 
 
 
+fi
