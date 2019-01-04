@@ -2,13 +2,9 @@
 
 A container that scales nodes respecting the docker swarm semantics instead of having to start nodes one by one
 
-The swarm service must be named cockroachdb and must run within an overlay network
+The swarm service must be named cockroachdb, it's essential for discoverability of nodes; you cna pick whatever network name you like and it's not necessary for it to be attachable like in the example below.
 
-You can add as many node as you want dynamically using the scaling command
-
-You have to scale back one node at a time waiting for the cluster to finish rebalancing
-
-Also, there are currently loads issues with replicas on the same node in docker, so don't go over one replica per swarm node, even if it's cool for testing
+You can add as many node as you want dynamically using the standard swarm scaling command, and you can scale them back as easily, an interrupt trap decommission the node properly.
 
 ## Usage:
 
@@ -16,7 +12,6 @@ Also, there are currently loads issues with replicas on the same node in docker,
     sudo docker network create --driver overlay --attachable cockroachdb
     docker service create --replicas 3 --name cockroachdb --publish 8080:8080  --update-parallelism 1  --hostname "cockroachdb.{{.Task.Slot}}.{{.Task.ID}}" --network swarm-network --stop-grace-period 60s  tos/cockroachdb
 
-You can use your own name for the network but cockroachdb service name is hardcoded internally for discoverability
 
 
 ## Attach a client:
@@ -24,7 +19,9 @@ You can use your own name for the network but cockroachdb service name is hardco
      docker run --network swarm-network -it tos/cockroachdb cockroach sql --host=cockroachdb --insecure
 
 
+## TODO
 
+    Figure a way to use node label to configure cockroach zones.
 
     
 
