@@ -13,7 +13,16 @@ Also, there are currently loads issues with replicas on the same node in docker,
 ## Usage:
 
     docker build https://github.com/LorenzoBoccaccia/cockroach-swarm.git -t tos/cockroachdb
+    sudo docker network create --driver overlay --attachable cockroachdb
     docker service create --replicas 3 --name cockroachdb --publish 8080:8080  --update-parallelism 1  --hostname "cockroachdb.{{.Task.Slot}}.{{.Task.ID}}" --network swarm-network --stop-grace-period 60s  tos/cockroachdb
+
+## Attach a client:
+
+     docker run --network swarm-network -it tos/cockroachdb cockroach sql --host=cockroachdb --insecure
+
+
+You can use your own network but cockroachdb service name is hardcoded internally for discoverability
+
 
     
 
