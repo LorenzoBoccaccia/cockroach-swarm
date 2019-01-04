@@ -14,7 +14,5 @@ echo starting server with   $(  nslookup tasks.cockroachdb | grep Address | tail
 
 wait $!
 
-sleep 30
-
 
 
