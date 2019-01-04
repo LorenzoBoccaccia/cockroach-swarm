@@ -17,4 +17,4 @@ Also, there are currently loads issues with replicas on the same node in docker,
     docker service scale cockroachdb=3
     
 
-\* proper scaling depends on a number of features currently missing from cockroachdb, like decommissioning nodes
+\* proper scaling is missing an option for docker swarm to start server orderly. that's why we create 1 replica and up it afterward, if you start 3 nodes togheter they won't see each other since nslookup for swarm discovery only finds started containers
