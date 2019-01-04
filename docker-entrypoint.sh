@@ -2,7 +2,7 @@
 
 echo "starting server"
 
-exec "$@"
+exec /cockroach/cockroach "$@"
 	
 
 
