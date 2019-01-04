@@ -16,7 +16,7 @@ echo starting server with   $(  nslookup tasks.cockroachdb | grep Address | tail
 
 PID=$!
 
-if [[ $(hostname -s) = cockroachdb.1.* ]]; then
+if [[ $(hostname) = cockroachdb.1.* ]]; then
     sleep 5
     /cockroach/cockroach init --insecure
 fi
