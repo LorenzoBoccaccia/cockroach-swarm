@@ -1,5 +1,10 @@
 FROM cockroach:2.1.3
 
+RUN apt-get update && \
+	apt-get -y upgrade && \
+	apt-get install -y dnsutils  && \
+	rm -rf /var/lib/apt/lists/*
+ 
 COPY docker-entrypoint.sh /
 RUN chmod a+x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
