@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#wait the nslookup to populate
+sleep 5 
+
 cleanup() {
     echo "Container stopped, performing cleanup..."
     /cockroach/cockroach quit --decommission --insecure 
