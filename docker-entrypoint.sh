@@ -2,7 +2,7 @@
 
 cleanup() {
     echo "Container stopped, performing cleanup..."
-    cockroach quit --decommission --insecure 
+    /cockroach/cockroach quit --decommission --insecure 
 }
 
 trap 'cleanup' SIGTERM
@@ -14,6 +14,7 @@ echo starting server with   $(  nslookup tasks.cockroachdb | grep Address | tail
 
 wait $!
 
+sleep 30
 
 
 
