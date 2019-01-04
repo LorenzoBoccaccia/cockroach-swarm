@@ -14,7 +14,7 @@ Also, there are currently loads issues with replicas on the same node in docker,
 
     docker build https://github.com/LorenzoBoccaccia/cockroach-swarm.git -t tos/cockroachdb
     docker service create --replicas 1 --name cockroachdb --publish 8080:8080  --update-parallelism 1  --hostname "cockroachdb.{{.Task.Slot}}.{{.Task.ID}}" --network swarm-network --stop-grace-period 60s  tos/cockroachdb
-    docker service scale cockroachdb 3
+    docker service scale cockroachdb=3
     
 
 \* proper scaling depends on a number of features currently missing from cockroachdb, like decommissioning nodes
