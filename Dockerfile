@@ -2,7 +2,7 @@ FROM cockroachdb/cockroach:v2.1.3
 
 RUN apt-get update && \
 	apt-get -y upgrade && \
-	apt-get install -y dnsutils  && \
+	apt-get install -y dnsutils curl && \
 	rm -rf /var/lib/apt/lists/*
  
 COPY docker-entrypoint.sh /
